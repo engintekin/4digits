@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="jquery.mobile-1.0a3/jquery.mobile-1.0a3.min.css"/>
     <link rel="stylesheet" href="docs/_assets/css/jqm-docs.css"/>
     <style type="text/css">
-        input.ui-input-text, textarea.ui-input-text {
-            background-image: none;
-            display: block;
-            font-size: 16px;
-            line-height: 1.4;
-            padding: 0.4em;
-            width: 60%;
-        }
+        /*input.ui-input-text, textarea.ui-input-text {*/
+        /*background-image: none;*/
+        /*display: block;*/
+        /*font-size: 16px;*/
+        /*line-height: 1.4;*/
+        /*padding: 0.4em;*/
+        /*width: 60%;*/
+        /*}*/
 
         .landscape, .landscape .ui-page {
             min-height: 100%;
@@ -30,6 +30,7 @@
 
     <script type="text/javascript" src="jquery-1.5.1.js"></script>
     <script type="text/javascript" src="jquery.mobile-1.0a3/jquery.mobile-1.0a3.min.js"></script>
+    <script type="text/javascript" src="jquery.caret-range-1.0.js"></script>
 
     <script type="text/javascript" src="experiments/themeswitcher/jquery.mobile.themeswitcher.js"></script>
     <script type="text/javascript" src="docs/_assets/js/jqm-docs.js"></script>
@@ -40,7 +41,7 @@
         gamePlay = 0;
 
         function restart() {
-            $('#history'+gamePlay++).before('<ol id="history'+gamePlay+'" data-inset="true" data-theme="d" data-role="listview" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" role="listbox"> </ol>');
+            $('#history' + gamePlay++).before('<ol id="history' + gamePlay + '" data-inset="true" data-theme="d" data-role="listview" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" role="listbox"> </ol>');
 
             numberOfGuesses = 0;
             randomNum = random4DigitNumber();
@@ -65,7 +66,7 @@
             var history = $(currentHistoryId);
             history.children().first().removeClass('ui-corner-top');
 
-            if (numberOfGuesses == 1){
+            if (numberOfGuesses == 1) {
                 $('<li class="ui-li ui-li-static ui-btn-up-d ui-corner-top ui-corner-bottom" tabindex="-1" role="option" style="display:none;">' + numberOfGuesses + '. ' + guess + '<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">' + result + '</span></li>')
                         .prependTo(currentHistoryId);
             }
@@ -75,9 +76,9 @@
 
             history.children().first().slideDown('slow');
 
-            if(result == "+4-0"){
+            if (result == "+4-0") {
                 history.children().first().css('background', '#cccccc');
-                addResultRow("Congratulations, you can go on with a new number", numberOfGuesses,"....");
+                addResultRow("Congratulations, you can go on with a new number", numberOfGuesses, "....");
                 restart();
             }
 
@@ -115,13 +116,17 @@
 
         $(function() {
             restart();
-            $('#guess').focus();
 
-            $('body').bind('swipe', function(e) {
-                alert('You swiped!');
-                e.stopImmediatePropagation();
-                return false;
+
+            $('#game').live('pageshow', function(event, ui) {
+//                alert('pageshow');
+                window.KeyBoard.showKeyBoard();
+//                $('#guess').focus();
+//                $('body').focus();
+//                $('#guess').val("asd");
+//                $('#guess').select();
             });
+
 
             $('#guess').keypress(function(e) {
                 if ($(this).val().length == 4) {
@@ -131,10 +136,8 @@
             });
 
             $('#guess').keyup(function(e) {
-                if (e.which != '13')
-                    return;
-
-                processTheGuess();
+                if ($(this).val().length == 4)
+                    processTheGuess();
             });
 
             $('#guessButton').click(function(e) {
@@ -153,7 +156,7 @@
             <a class="centered" href="#game">
                 <img src="fortune-teller.jpg"/>
             </a>
-            <a href="#game" data-role="button" data-theme="b">Start</a>
+            <a id="startButton" href="#game" data-role="button" data-theme="b">Start</a>
             <a href="#help" data-role="button" data-theme="b">Help</a>
             <a href="#about" data-role="button" data-theme="b">About</a>
         </div>
@@ -163,27 +166,32 @@
 <div data-role="page" data-theme="b" id="help" style="background:white">
     <div data-role="content">
         <ul data-role="listview" class="ui-listview" role="listbox">
-            <li data-role="list-divider" role="heading" tabindex="0" class="ui-li ui-li-divider ui-btn ui-bar-b ui-btn-up-undefined">What is
+            <li data-role="list-divider" role="heading" tabindex="0"
+                class="ui-li ui-li-divider ui-btn ui-bar-b ui-btn-up-undefined">What is
                 this?
             </li>
 
             <li role="option" tabindex="-1" data-theme="c" class="ui-li ui-btn-up-c">
-                Beside based on analytical thinking, this challenging game addresses almost all people from different occupations and students.
+                Beside based on analytical thinking, this challenging game addresses almost all people from different
+                occupations and students.
                 User tries to guess the secret number which is 4-digit randomly generated by the computer.
             </li>
-            <li data-role="list-divider" role="heading" tabindex="0" class="ui-li ui-li-divider ui-btn ui-bar-b ui-btn-up-undefined">How to play?</li>
+            <li data-role="list-divider" role="heading" tabindex="0"
+                class="ui-li ui-li-divider ui-btn ui-bar-b ui-btn-up-undefined">How to play?
+            </li>
 
             <li role="option" tabindex="-1" data-theme="c" class="ui-btn ui-btn-icon-right ui-li ui-btn-up-c">
                 Press the start button.
             </li>
             <li role="option" tabindex="-1" data-theme="c" class="ui-btn ui-btn-icon-right ui-li ui-btn-up-c">
-                Write a 4-digit number into the textbox.
+                Write a 4-digit number into the textbox. (A digit occurs only once in the number)
             </li>
             <li role="option" tabindex="-1" data-theme="c" class="ui-btn ui-btn-icon-right ui-li ui-btn-up-c">
                 The program compares your and its own number.
             </li>
             <li role="option" tabindex="-1" data-theme="c" class="ui-btn ui-btn-icon-right ui-li ui-btn-up-c">
-                The number of matching digits appears on the same line with your number and the right side of the game with "+" signal.
+                The number of matching digits appears on the same line with your number and the right side of the game
+                with "+" signal.
             </li>
             <li role="option" tabindex="-1" data-theme="c" class="ui-btn ui-btn-icon-right ui-li ui-btn-up-c">
                 The number of the digits in wrong order appears next to "+ correct digits" with "-" signal.
@@ -198,12 +206,13 @@
 <div data-role="page" data-theme="b" id="about" style="background:white">
     <div data-role="content">
         <ul data-role="listview" class="ui-listview" role="listbox">
-            <li data-role="list-divider" role="heading" tabindex="0" class="ui-li ui-li-divider ui-btn ui-bar-b ui-btn-up-undefined">
+            <li data-role="list-divider" role="heading" tabindex="0"
+                class="ui-li ui-li-divider ui-btn ui-bar-b ui-btn-up-undefined">
                 This is a free software, as in freedom, not as in “free beer”.
             </li>
 
             <li role="option" tabindex="-1" data-theme="c" class="ui-li ui-btn-up-c">
-                http://github.com/4digits
+                https://github.com/engintekin/4digits
             </li>
         </ul>
     </div>
@@ -213,14 +222,14 @@
     <div data-role="content">
         <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
             <li data-role="list-divider">
-                <input type="tel" name="name" id="guess" value=""/>
+                <input type="number" tabindex="0" name="name" id="guess" value=""/>
 
-                <div id="guessButton" data-transition="slideup" data-rel="dialog" title="Purchase album" class="ui-li-link-alt ui-btn ui-btn-up-c"
-                     data-theme="c"><span
-                        class="ui-btn-inner"><span class="ui-btn-text"></span><span title="" data-theme="d"
-                                                                                    class="ui-btn ui-btn-up-d ui-btn-icon-notext ui-btn-corner-all ui-shadow"><span
-                        class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"></span><span
-                        class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></span></span></div>
+                <!--<div id="guessButton" data-transition="slideup" data-rel="dialog" title="Purchase album" class="ui-li-link-alt ui-btn ui-btn-up-c"-->
+                <!--data-theme="c"><span-->
+                <!--class="ui-btn-inner"><span class="ui-btn-text"></span><span title="" data-theme="d"-->
+                <!--class="ui-btn ui-btn-up-d ui-btn-icon-notext ui-btn-corner-all ui-shadow"><span-->
+                <!--class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"></span><span-->
+                <!--class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></span></span></div>-->
             </li>
         </ul>
 

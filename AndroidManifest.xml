@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.phonegap.Sample" 
-      android:versionName="1.1" 
+      package="com.fdnsoft.digits"
+      android:versionName="1.1.1"
       android:versionCode="1">
     <supports-screens
     	android:largeScreens="true"
@@ -12,7 +12,7 @@
     	/>
     
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
-        <activity android:name=".Sample"
+        <activity android:name="com.fdnsoft.digits.Digits4"
                   android:label="@string/app_name" android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
